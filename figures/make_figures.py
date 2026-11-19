@@ -82,8 +82,8 @@ ax.semilogx(N, r["power"], "o-", color="#38761d", label="empirical power")
 ax.semilogx(N, r["false_alarm"], "s-", color="#cc0000", label="empirical false alarm")
 ax.semilogx(N, np.minimum(1, r["bound"]), "k--", lw=0.8, label="Bernstein bound (Prop. 4)")
 ax.axvline(r["N_sufficient_alpha05"], color="0.4", ls=":", lw=0.8); ax.axhline(0.05, color="0.6", lw=0.5)
-ax.text(r["N_sufficient_alpha05"] * 1.1, 0.5, "Eq. (11),\n$\\alpha=0.05$", fontsize=6.5)
-ax.set_xlabel("trajectories per arm $N$"); ax.set_ylabel("probability"); ax.legend(frameon=False, fontsize=6.3, loc="center left")
+ax.text(r["N_sufficient_alpha05"] * 1.1, 0.75, "sufficient $N$\n(Prop. 4), $\\alpha=0.05$", fontsize=6.5)
+ax.set_xlabel("trajectories per arm $N$"); ax.set_ylabel("probability"); ax.legend(frameon=False, fontsize=6.3, loc="center right", bbox_to_anchor=(1.0, 0.42))
 fig.tight_layout(); fig.savefig(f"{O}/Fig5_power.pdf"); plt.close(fig)
 
 # ---------------- Fig 6: estimation and monitoring
