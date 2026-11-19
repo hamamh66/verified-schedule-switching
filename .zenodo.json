@@ -1,0 +1,8 @@
+{
+  "title": "Verified schedule switching for crosstalk identification in quantum error correction",
+  "upload_type": "software",
+  "description": "Open-source implementation of verified schedule switching: syndrome-extraction units that share gates and gate order but differ in which operations overlap are verified against a declared set of crosstalk couplings, and switching between them identifies concurrency-induced ZZ couplings from detector statistics, monitors the observation model, and selects the unit used for protection. Includes the Stim-based compiler and noise model, fault-distance verification, the exact parity observation model, identification, finite-sample tests, residual monitoring, a protection-under-drift experiment with PyMatching, all result files and figure scripts.",
+  "creators": [{"name": "Hamam, Habib", "affiliation": "Université de Moncton"}],
+  "license": "MIT",
+  "keywords": ["quantum error correction", "crosstalk", "syndrome extraction", "noise identification", "Stim"]
+}
