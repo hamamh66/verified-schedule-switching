@@ -235,3 +235,16 @@ def empirical_y(det_samples, features):
     y = -0.5 * np.log(mm)
     var = (1 - mm ** 2) / (4 * mm ** 2 * n)
     return y, var, m
+
+
+def apply_schedule_rounds(moments, scheds):
+    """Per-round schedules: the k-th occurrence of each two-qubit moment type belongs to round k
+    and is retimed by scheds[min(k, len(scheds)-1)]. Used for switching within a trajectory."""
+    count, out = {}, []
+    for m in moments:
+        if not m.pairs:
+            out.append(m); continue
+        k = count.get(m.key, 0); count[m.key] = k + 1
+        s = scheds[min(k, len(scheds) - 1)]
+        out.extend(apply_schedule([m], s))
+    return out

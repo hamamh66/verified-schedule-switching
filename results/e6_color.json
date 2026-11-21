@@ -1,0 +1,36 @@
+{
+ "code": "color",
+ "d_ref": 3,
+ "transitions": {
+  "1.0": {
+   "units": 32,
+   "ordered_pairs": 992,
+   "verified_edges": 992,
+   "failures": []
+  },
+  "1.5": {
+   "units": 32,
+   "ordered_pairs": 992,
+   "verified_edges": 992,
+   "failures": []
+  },
+  "2.0": {
+   "units": 5,
+   "ordered_pairs": 20,
+   "verified_edges": 20,
+   "failures": []
+  },
+  "2.5": {
+   "units": 3,
+   "ordered_pairs": 6,
+   "verified_edges": 6,
+   "failures": []
+  },
+  "3.0": {
+   "units": 3,
+   "ordered_pairs": 6,
+   "verified_edges": 6,
+   "failures": []
+  }
+ }
+}

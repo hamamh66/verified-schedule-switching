@@ -10,7 +10,8 @@ Open-source implementation of verified schedule switching: syndrome-extraction u
 | `vss/bank.py` | Candidate units (retiming by spatial bipartitions, sham idle insertion), verified banks, design matrices `B` (nuisance) and `A` (crosstalk), nuisance-adjusted identifiability |
 | `experiments/e1_bank_frontier.py` | Verified banks and identifiability versus the radius of the verification set |
 | `experiments/e234_identification.py` | Model validation, finite-sample decisions, estimation and residual monitoring |
-| `experiments/e5_protection.py` | Protection under a crosstalk onset with PyMatching decoding |
+| `experiments/e5_protection.py`, `e5_merge.py` | Protection under crosstalk drift (three scenarios, five policies including a privileged oracle, ten replicates) with PyMatching decoding |
+| `experiments/e6_transitions.py` | Verification of switching between units inside a trajectory |
 | `figures/` | Figure scripts and generated figures |
 | `results/` | JSON outputs of every experiment |
 
@@ -32,7 +33,7 @@ All random seeds are fixed in the scripts. Results were produced with Python 3.1
 
 ## Scope
 
-The verification criterion implemented here is preservation of the circuit-level fault distance of the reference circuit when every coupling of the declared set fires once per opportunity. Composable input/output tests for flagged protocols are not implemented. The crosstalk model is stochastic, pairwise and ZZ-only.
+The verification criterion implemented here is preservation of the circuit-level fault distance of the reference circuit when every coupling of the declared set fires once per opportunity; it is applied to single units and to trajectories that switch between units. Composable input/output tests for flagged protocols are not implemented. The crosstalk model is stochastic, pairwise and ZZ-only.
 
 ## License
 

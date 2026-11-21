@@ -1,0 +1,36 @@
+{
+ "code": "surface",
+ "d_ref": 5,
+ "transitions": {
+  "1.0": {
+   "units": 25,
+   "ordered_pairs": 600,
+   "verified_edges": 600,
+   "failures": []
+  },
+  "1.5": {
+   "units": 1,
+   "ordered_pairs": 0,
+   "verified_edges": 0,
+   "failures": []
+  },
+  "2.0": {
+   "units": 0,
+   "ordered_pairs": 0,
+   "verified_edges": 0,
+   "failures": []
+  },
+  "2.5": {
+   "units": 0,
+   "ordered_pairs": 0,
+   "verified_edges": 0,
+   "failures": []
+  },
+  "3.0": {
+   "units": 0,
+   "ordered_pairs": 0,
+   "verified_edges": 0,
+   "failures": []
+  }
+ }
+}

@@ -108,24 +108,29 @@ axs[2].xaxis.set_major_locator(matplotlib.ticker.LogLocator(numticks=4)); axs[2]
 for a, t in zip(axs, "abc"): a.set_title(f"({t})", loc="left", fontsize=8, weight="bold")
 fig.tight_layout(); fig.savefig(f"{O}/Fig6_estimation_monitoring.pdf"); plt.close(fig)
 
-# ---------------- Fig 7: protection under drift
-r = J("e5_surface.json")
-pols = ["fixed-ref", "fixed-serialized", "uniform-switching", "adaptive"]
-cols = {"fixed-ref": "#cc0000", "fixed-serialized": "#1f77b4", "uniform-switching": "0.5", "adaptive": "#38761d"}
-fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.5))
+# ---------------- Fig 7: protection under drift (10 replicates, 3 scenarios)
+r = J("e5_surface.json"); logs = r["log"]; seeds = r["seeds"]
+pols = ["fixed-ref", "uniform-switching", "adaptive", "fixed-serialized", "oracle"]
+cols = {"fixed-ref": "#cc0000", "fixed-serialized": "#1f77b4", "uniform-switching": "0.5", "adaptive": "#38761d", "oracle": "k"}
+fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.9), gridspec_kw=dict(width_ratios=[1.2, 1]))
+W = r["windows"]
 for p in pols:
-    lg = [x for x in r["log"] if x["policy"] == p]
-    w = [x["window"] for x in lg]; rate = [x["rate"] for x in lg]
-    lo = [max(x["failures"] - 2 * np.sqrt(x["failures"] + 1), 0.5) / x["elapsed"] for x in lg]
-    hi = [(x["failures"] + 2 * np.sqrt(x["failures"] + 1)) / x["elapsed"] for x in lg]
-    axs[0].semilogy(w, rate, "o-", ms=3, color=cols[p], label=p); axs[0].fill_between(w, lo, hi, color=cols[p], alpha=0.12)
-    el = np.cumsum([x["elapsed"] for x in lg]); fl = np.cumsum([x["failures"] for x in lg])
-    axs[1].plot(el, fl, "-", color=cols[p], label=p)
-axs[0].axvline(r["onset_window"] - 0.5, color="k", ls=":", lw=0.8); axs[0].text(r["onset_window"] - 0.4, 1.5e-6, "onset", fontsize=6.5)
-if r["alarm_window"] is not None:
-    axs[0].axvline(r["alarm_window"] + 0.5, color="#38761d", ls="--", lw=0.8)
-axs[0].set_xlabel("window"); axs[0].set_ylabel("logical failures per unit time"); axs[0].legend(frameon=False, fontsize=6)
-axs[1].set_xlabel("elapsed time (gate-moment units)"); axs[1].set_ylabel("cumulative logical failures"); axs[1].set_yscale("log")
+    R = np.array([[next(x["failures"] / x["elapsed"] for x in logs if x["scenario"] == "step-w4" and x["policy"] == p
+                        and x["seed"] == s and x["window"] == w) for w in range(W)] for s in seeds])
+    axs[0].semilogy(range(W), R.mean(0), "o-" if p != "oracle" else "--", ms=2.5, lw=1, color=cols[p], label=p)
+    axs[0].fill_between(range(W), R.min(0), R.max(0), color=cols[p], alpha=0.12)
+axs[0].axvline(3.5, color="k", ls=":", lw=0.8); axs[0].text(3.6, 1.3e-6, "onset", fontsize=6.5)
+axs[0].set_xlabel("window (scenario step-w4)"); axs[0].set_ylabel("logical failures per unit time")
+h, l = axs[0].get_legend_handles_labels()
+scen = r["scenarios"]; xoff = np.linspace(-0.3, 0.3, len(pols))
+for i, p in enumerate(pols):
+    m = [r["summary"][sc][p]["total"]["mean"] for sc in scen]
+    lo = [r["summary"][sc][p]["total"]["min"] for sc in scen]; hi = [r["summary"][sc][p]["total"]["max"] for sc in scen]
+    axs[1].errorbar(np.arange(len(scen)) + xoff[i], m, yerr=[np.array(m) - lo, np.array(hi) - m], fmt="o", ms=3,
+                    color=cols[p], capsize=2, lw=0.8)
+axs[1].set_yscale("log"); axs[1].set_xticks(range(len(scen))); axs[1].set_xticklabels(scen)
+axs[1].set_ylabel("time-averaged failure rate")
 for a, t in zip(axs, "ab"): a.set_title(f"({t})", loc="left", fontsize=8, weight="bold")
-fig.tight_layout(); fig.savefig(f"{O}/Fig7_protection.pdf"); plt.close(fig)
+fig.tight_layout(rect=(0, 0.08, 1, 1)); fig.legend(h, l, loc="lower center", ncol=5, frameon=False, fontsize=6.5)
+fig.savefig(f"{O}/Fig7_protection.pdf"); plt.close(fig)
 print("figures written")
